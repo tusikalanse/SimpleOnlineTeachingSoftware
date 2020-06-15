@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <title>直播demo</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="./QWebChannel.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $("#start").click(function(){
+                start()
+            })
+            function start() {
+                video = $("#videos").val()
+                audio = $("#audios").val()
+                pyjs.startlive(video + " ," + audio)
+                window.location.href='./live.html'
+            }
+        })
+        window.onload = function () {
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                window.pyjs = channel.objects.pyjs;    //把对象赋值到JS中
+//                pyjs.myHello(alert);
+                pyjs.getdevices();
+            });
+        }
+        function addvideo(video) {
+            var obj = document.getElementById("videos")
+            obj.options.add(new Option(video, video))
+        }
+        function addaudio(audio) {
+            var obj = document.getElementById("audios")
+            obj.options.add(new Option(audio, audio))
+        }
+    </script>
+</head>
+
+<body>
+    <div id="videolist">
+        <p>视频设备列表</p>
+        <select id="videos">
+        </select>
+    </div>
+
+    <div id="audiolist">
+        <p>音频设备列表</p>
+        <select id="audios">
+        </select>
+    </div>
+    <button id="start" type="button">开始直播</button>
+</body>
+</html>

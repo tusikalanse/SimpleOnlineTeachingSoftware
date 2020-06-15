@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设备</title>
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="./QWebChannel.js"></script>
+    <script>
+        window.onload = function () {
+            alert("fdsfds")
+            // new QWebChannel(qt.webChannelTransport, function (channel) {
+            //     window.pyjs = channel.objects.pyjs;    //把对象赋值到JS中
+            // });
+            alert("fdsfds")
+        }
+        $(document).ready(function () {
+            alert("fdsfds")
+            // $("#selector1").append("<option>"+"sddfssfd"+"</option>")
+            //     alert("sdfdsdffdssfd")
+            // pyjs.dev(function (res) {
+            //     alert("sdfd")
+            //     alert(res)
+            //     $("#selector1").append("<option>"+res[0]+"</option>")
+            // });
+            // $("#selector1").append("<option>"+pyjs.dev(function (res){})[0]+"</option>")
+            // $("#selector1").append("<option>"+"不使用摄像头"+"</option>")
+            // $("#selector2").append("<option>"+pyjs.dev(function (res){})[2]+"</option>")
+            // $("#selector2").append("<option>"+pyjs.dev(function (res){})[3]+"</option>")
+            // $("#selector3").append("<option>"+pyjs.dev(function (res){})[1]+"</option>")
+            // $("#selector3").append("<option>"+"不适用屏幕分享"+"</option>")
+        })
+
+    </script>
+</head>
+<body>
+    选择音频设备：<select id="selector1"></select>
+    选择视频设备：<select id="selector2"></select>
+    是否分享屏幕：<select id="selector3"></select>
+    <button type="button" onclick="live();">点我!</button>
+    <script>
+        function live() {
+            var s1=$("#selector1")
+            var s2=$("#selector2")
+            var s3=$("#selector3")
+            var lis=[s1,s2,s3]
+            if (s1!="不使用屏幕分享")
+            {
+                // pyjs.ffmpy1(lis)
+            }
+            else
+            {
+                // pyjs.ffmpy2(lis)
+            }
+        }
+    </script>
+</body>
+</html>
