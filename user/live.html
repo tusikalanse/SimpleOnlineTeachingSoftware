@@ -42,9 +42,9 @@
     <script type="text/javascript" src="./QWebChannel.js"></script>
     <script>
         window.onload = function () {
-            // new QWebChannel(qt.webChannelTransport, function (channel) {
-            //     window.pyjs = channel.objects.pyjs;    //把对象赋值到JS中
-            // });
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                 window.pyjs = channel.objects.pyjs;    //把对象赋值到JS中
+            });
         }
     </script>
 </head>
@@ -93,7 +93,7 @@
         }
 
         function terminate() {
-            // pyjs.endlive()
+            pyjs.endlive()
         }
 
         function flv_seekto() {
