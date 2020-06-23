@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{lessonName}}</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="../static/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/livestudent.css" type="text/css" rel="stylesheet"/>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="../static/js/QWebChannel.js"></script>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <script type="text/javascript" src="/static/js/flv.min.js"></script>
+    <style>
+        #u0 {
+            display: block;
+            width: 455px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .urlInput {
+            display: block;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .centeredVideo {
+            display: block;
+            width: 100%;
+            height: 272px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: auto;
+        }
+        
+        .controls {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #u7_div {
+          border-width:0px;
+          width:137px;
+          height:106px;
+          background:inherit;
+          background-color:rgba(255, 255, 255, 1);
+          box-sizing:border-box;
+          border-width:1px;
+          border-style:solid;
+          border-color:rgba(121, 121, 121, 1);
+          border-radius:0px;
+          -moz-box-shadow:none;
+          -webkit-box-shadow:none;
+          box-shadow:none;
+          font-size:20px;
+        }
+        #u7 {
+          border-width:0px;
+          width:137px;
+          height:106px;
+          display:flex;
+          font-size:20px;
+        }
+        #u7 .text {
+          align-self:center;
+          padding:2px 2px 2px 2px;
+          box-sizing:border-box;
+          width:100%;
+        }
+        #u7_text {
+          border-width:0px;
+          word-wrap:break-word;
+          text-transform:none;
+        }
+        .smallVideo {
+            display: block;
+            width: 100%;
+            height: 100px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: auto;
+        }
+      </style>
+        <script>
+          function addvideo(video) {
+              var obj = document.getElementById("u9_input")
+              obj.options.add(new Option(video, video))
+            }
+          function addaudio(audio) {
+              var obj = document.getElementById("u10_input")
+              obj.options.add(new Option(audio, audio))
+          }
+          $(function(){
+            if (typeof qt == "undefined") {
+            }
+            else {
+              $("#base").append('<div id="u9" class="ax_default droplist" data-label="视频选择">' +
+                            '<div id="u9_div" class=""></div>' + 
+                            '<select id="u9_input" class="u9_input">' +
+                            '</select>' + 
+                            '</div>');
+              $("#base").append('<div id="u10" class="ax_default droplist" data-label="音频选择">' + 
+                            '<div id="u10_div" class=""></div>' + 
+                            '<select id="u10_input" class="u10_input">' + 
+                            '</select>' + 
+                            '</div>');              
+              new QWebChannel(qt.webChannelTransport, function (channel) {
+                    window.pyjs = channel.objects.pyjs;    //把对象赋值到JS中
+                    pyjs.getdevices();
+              });
+            function changed() {
+              video = $("#u9_input").val()
+              audio = $("#u10_input").val()
+              CID = $("#CID").val()
+              UID = $("#UID").val()
+              pyjs.startlive(video + " ," + audio + " ," + UID + " ," + CID)
+              if (video == "不使用视频" && audio == "不使用音频") {
+                livechanged(0)
+              }
+              else {
+                livechanged(1)
+              }
+            }
+            $("#u9_input").change(changed)
+           }
+            CID = $("#CID").val()
+            UID = $("#UID").val()
+            lessonName = $("#lessonName").val()
+            $("#u5").click(function(){
+                sendText()
+            })
+            function requestText(){
+                host = "ws://yourwebserver:8888/newClient?CID=" + CID + "&lessonName=" + lessonName + "&UID=" + UID
+                websocket = new WebSocket(host)
+                websocket.onopen = function(evt){}      // 建立连接
+                websocket.onmessage = function(evt){    // 获取服务器返回的信息
+                  data = $.parseJSON(evt.data)        // 将获得的消息添加到聊天框
+                  if (data["source"] == "system") {
+                      words = data["message"].split(" ")
+                      if (words[1] == "加入课堂") {
+                          var obj = document.getElementById("u6_text")
+                          var newobj = document.createElement('div')
+                          newobj.id = "UID_" + words[0]
+                          newobj.style.fontSize = "10px"
+                          newobj.innerHTML = words[0]
+                          obj.appendChild(newobj)
+                      }
+                      else if (words[1] == "离开课堂") {
+                          var obj = document.getElementById("u6_text")
+                          var son = null
+                          for (var i = 0; i < obj.childNodes.length; ++i) {
+                              if (obj.childNodes[i].id == "UID_" + words[0])
+                                  son = obj.childNodes[i]
+                          }
+                          obj.removeChild(son)
+                      }
+                  }
+                  else {
+                    if (data["message"] == "开启直播1234567890") {
+                      // alert(data["source"] + "开启直播")
+                      addlive(data["source"])
+                    }
+                    else if (data["message"] == "关闭直播1234567890") {
+                      removelive(data["source"])
+                    }
+                    else {
+                      var txt1 = document.createElement("div");
+                      var txt2 = document.createElement("div");
+                      if (data["source"] == UID) {
+                          txt1.className = "my"
+                          txt2.className = "my"
+                      }
+                      else {
+                          txt1.className = "others" 
+                          txt2.className = "others" 
+                      }
+                      txt1.innerHTML = data["source"] + "(" + data["time"] + ")" + "<br>"
+                      txt1.style.fontSize = "10px"
+                      txt2.style.fontSize = "10px"
+                      txt2.append(data["message"])
+                      $('#u2_text').append(txt1)
+                      $('#u2_text').append(txt2)
+                    }
+                  }
+                }
+                websocket.onerror = function(evt){}
+            }
+            requestText()   // 开始 websocket
+            function sendText(){    // 向服务器发送信息
+                var message = new Array()
+                message[0] = $("#u3_text").val()
+                websocket.send(message)
+                $("#u3_text").val("")
+            }
+            function livechanged(flag) {
+              var message = new Array()
+              if (flag == 1) {
+                message[0] = "开启直播1234567890"
+              }
+              else {
+                message[0] = "关闭直播1234567890"
+              }
+              websocket.send(message)
+            }
+            function addlive(UUID) {
+            }
+            function removelive(UUID) {   
+              player.pause();
+              player.unload();
+              player.detachMediaElement();
+              player.destroy();
+              player = null;
+              document.getElementById("smallvideo").remove()
+            }
+        })
+        </script>
+  </head>
+  <body>
+    <div id="base" class="">
+        <input type="hidden" value="{{ UID }}" id="UID"/>
+        <input type="hidden" value="{{ CID }}" id="CID"/>
+        <input type="hidden" value="{{ lessonName }}" id="lessonName"/>
+
+      <!-- 屏幕分享 (矩形) -->
+      <div id="u0" class="ax_default box_1" data-label="屏幕分享">
+        <div id="u0_div" class=""></div>
+        <div id="u0_text" class="text ">
+            <video autoplay="autoplay" id="videoElement" class="centeredVideo" controls>Your browser is too old which doesn't support HTML5 video.</video>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1" class="ax_default box_1">
+        <div id="u1_div" class=""></div>
+        <div id="u1_text" class="text ">
+          <!-- <p><span style="text-decoration:none;">这是可能打开的摄像头</span></p> -->
+        </div>
+      </div>
+
+      <!-- 聊天记录 (矩形) -->
+      <div id="u2" class="ax_default box_1" data-label="聊天记录">
+        <div id="u2_div" class=""></div>
+        <div id="u2_text" class="text ">
+          <!-- <p><span style="text-decoration:none;">这是聊天记录</span></p> -->
+        </div>
+      </div>
+
+      <!-- 聊天输入 (矩形) -->
+      <div id="u3" class="ax_default box_1" data-label="聊天输入">
+        <div id="u3_div" class=""></div>
+        <input id="u3_text" class="text "/>
+          <!-- <p><span style="text-decoration:none;">这是聊天框</span></p> -->
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4" class="ax_default primary_button">
+        <div id="u4_div" class=""></div>
+        <div id="u4_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer" onclick="location='course?UID={{UID}}&CID={{CID}}'">退出直播</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5" class="ax_default primary_button">
+        <div id="u5_div" class=""></div>
+        <div id="u5_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">发送消息</span></p>
+        </div>
+      </div>
+
+      <!-- 成员列表 (矩形) -->
+      <div id="u6" class="ax_default box_1" data-label="成员列表">
+        <div id="u6_div" class=""></div>
+        <div id="u6_text" class="text ">
+          {% for usr in users %}
+                <div id="UID_{{usr}}" style="font-size:10px">{{ usr }}</div>  
+          {% end %}
+          <!-- <p><span style="text-decoration:none;">参会人员列表</span></p> -->
+        </div>
+      </div>
+
+      <!-- 成员列表 (矩形) -->
+      <div id="u7" class="ax_default box_1" data-label="成员列表">
+        <div id="u7_div" class=""></div>
+        <div id="u7_text" class="text ">
+          <video autoplay="autoplay" id="smallvideo" class="smallVideo" controls>Your browser is too old which doesn\'t support HTML5 video.</video>
+        </div>
+      </div>
+
+      <!-- 成员列表 (矩形) -->
+      <!-- <div id="u8" class="ax_default box_1" data-label="成员列表">
+        <div id="u8_div" class=""></div>
+        <div id="u8_text" class="text ">
+          <p><span style="text-decoration:none;">示例摄像头2</span></p>
+        </div>
+      </div> -->
+    </div>
+    <script>
+        var player = document.getElementById('videoElement');
+        if (flvjs.isSupported()) {
+            var flvPlayer = flvjs.createPlayer({
+                type: 'flv',
+                url: 'http://yournginxserver:8080/live?app=live&stream={{CID}}_{{TUID}}',
+            });
+            flvPlayer.attachMediaElement(videoElement);
+            flvPlayer.load(); //加载
+            flvPlayer.play();
+        }
+        var player2 = document.getElementById('smallvideo');
+        if (flvjs.isSupported()) {
+            var flvPlayer2 = flvjs.createPlayer({
+                type: 'flv',
+                url: 'http://yournginxserver:8080/live?app=live&stream={{CID}}_{{UID}}',
+            });
+            flvPlayer2.attachMediaElement(smallvideo);
+            flvPlayer2.load(); //加载
+            flvPlayer2.play();
+        }
+    </script>
+  </body>
+</html>

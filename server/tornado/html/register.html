@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>register</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="../static/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/register.css" type="text/css" rel="stylesheet"/>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        function doPost(URL) {
+            PARAMS = {'UID' : $("#u11_input").val(), 'password' : $("#u12_input").val()};
+            var temp = document.createElement("form");
+            temp.action = URL;
+            temp.method = "post";
+            temp.style.display = "none";
+            for (var x in PARAMS) {
+                var opt = document.createElement("textarea");
+                opt.name = x;
+                opt.value = PARAMS[x];
+                temp.appendChild(opt);
+            }
+            document.body.appendChild(temp);
+            temp.submit();
+            return temp;
+        }
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (矩形) -->
+      <div id="u8" class="ax_default _一级标题">
+        <div id="u8_div" class=""></div>
+        <div id="u8_text" class="text ">
+          <p><span style="text-decoration:none;">注册新账号</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u9" class="ax_default label">
+        <div id="u9_div" class=""></div>
+        <div id="u9_text" class="text ">
+          <p><span style="text-decoration:none;">用户名：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10" class="ax_default label">
+        <div id="u10_div" class=""></div>
+        <div id="u10_text" class="text ">
+          <p><span style="text-decoration:none;">密码：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (文本框) -->
+      <div id="u11" class="ax_default text_field">
+        <div id="u11_div" class=""></div>
+        <input id="u11_input" type="text" value="" class="u11_input"/>
+      </div>
+
+      <!-- Unnamed (文本框) -->
+      <div id="u12" class="ax_default text_field">
+        <div id="u12_div" class=""></div>
+        <input id="u12_input" type="password" value="" class="u12_input"/>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u13" class="ax_default primary_button" onclick="doPost('register')">
+        <div id="u13_div" class=""></div>
+        <div id="u13_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">注册账号</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u14" class="ax_default label">
+        <div id="u14_div" class=""></div>
+        <div id="u14_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

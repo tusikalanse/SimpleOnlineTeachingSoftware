@@ -1,0 +1,12 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{static_url("css/style.css")}}">
+        <title>
+            {{info["Content"]}}
+        </title>
+    </head>
+    <body>
+        <meta http-equiv="refresh" content="{{info["timeout"]}};url={{info["url"]}}">
+        {{info["info"]}}
+    </body>
+</html>

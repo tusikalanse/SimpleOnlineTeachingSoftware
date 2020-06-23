@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{name}}的课程资源</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="../static/js/QWebChannel.js"></script>
+    <link href="../static/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/resourceteacher.css" type="text/css" rel="stylesheet"/>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- 资源列表 (矩形) -->
+      <div id="u0" class="ax_default text_field" data-label="资源列表">
+        <div id="u0_text" class="text ">
+            {% for resource in resourceList %}
+                <p>
+                <span style="text-decoration:none;">{{resource[1]}}</span>
+
+                <a style="text-decoration:none;cursor:pointer;color:#0000FF;" href="../download/{{resource[2]}}" download="{{resource[1]}}">点击下载</a>
+
+                <!-- <p><span style="text-decoration:none;cursor:pointer;color:#0000FF;" onclick="download('{{resource[2]}}')">下载</span></p> -->
+
+                <span style="text-decoration:none;cursor:pointer;color:#0000FF;" onclick="location='deleteresource?UID={{UID}}&CID={{CID}}&RID={{resource[0]}}'">删除</span></p>
+
+            {% end %}
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1" class="ax_default _一级标题">
+        <div id="u1_div" class=""></div>
+        <div id="u1_text" class="text ">
+          <p><span style="text-decoration:none;">1727405048教学直播系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2" class="ax_default label">
+        <div id="u2_div" class=""></div>
+        <div id="u2_text" class="text ">
+          <p><span style="text-decoration:none;">{{UID}}</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u3" class="ax_default label" onclick="location='teacher?UID={{UID}}'">
+        <div id="u3_div" class=""></div>
+        <div id="u3_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">返回首页</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4" class="ax_default label">
+        <div id="u4_div" class=""></div>
+        <div id="u4_text" class="text ">
+          <p><span style="text-decoration:none;">{{name}}</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5" class="ax_default label">
+        <div id="u5_div" class=""></div>
+        <div id="u5_text" class="text ">
+          <p><span style="text-decoration:none;">{{CID}}</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u12" class="ax_default primary_button" onclick="location='upload?UID={{UID}}&CID={{CID}}'">
+        <div id="u12_div" class=""></div>
+        <div id="u12_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">上传新资源</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u13" class="ax_default primary_button" onclick="location='course?UID={{UID}}&CID={{CID}}'">
+        <div id="u13_div" class=""></div>
+        <div id="u13_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">返回</span></p>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

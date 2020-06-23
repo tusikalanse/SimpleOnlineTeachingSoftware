@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>上传资源</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="../static/js/QWebChannel.js"></script>
+    <link href="../static/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/upload.css" type="text/css" rel="stylesheet"/>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+      function doPost(URL) {
+           var formData = new FormData();
+           formData.append('file', $('input[type=file]')[0].files[0]);
+           formData.append('UID', $("#UID").val());
+           formData.append('CID', $("#CID").val());
+           formData.append('name', $("#u2_input").val());
+           $.ajax({
+               url: URL,
+               data: formData,
+               type: 'POST',
+               contentType: false,
+               processData: false,
+               beforeSend: function(){  
+                  HTMLtitle.innerHTML = "正在上传文件,请耐心等待"
+               },  
+               success: function(data){
+                    document.documentElement.innerHTML = data
+                   // TODO
+               },
+               error: function(data){
+                    document.documentElement.innerHTML = data
+               }
+           })
+       };
+  </script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (矩形) -->
+      <div id="u0" class="ax_default _一级标题">
+        <div id="u0_div" class=""></div>
+        <div id="u0_text" class="text ">
+          <p><span style="text-decoration:none;" id="HTMLtitle">您正在为{{name}}上传资源</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1" class="ax_default label">
+        <div id="u1_div" class=""></div>
+        <div id="u1_text" class="text ">
+          <p><span style="text-decoration:none;">请输入资源名称：</span></p>
+        </div>
+      </div>
+
+        <input type="hidden" value="{{ CID }}" id="CID"></input>
+        <input type="hidden" value="{{ UID }}" id="UID"></input>
+        <!-- Unnamed (文本框) -->
+      <div id="u2" class="ax_default text_field">
+        <div id="u2_div" class=""></div>
+        <input id="u2_input" type="text" value="" class="u2_input"/>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u3" class="ax_default label">
+        <div id="u3_div" class=""></div>
+        <div id="u3_text" class="text ">
+            <input name="fileinput" id="my_file"  type="file" ></input>
+          <!-- <p><span style="text-decoration:none;">请选择资源</span></p> -->
+        </div>
+      </div>
+
+      <!-- 确认上传 (矩形) -->
+      <div id="u5" class="ax_default primary_button" data-label="确认上传">
+        <div id="u5_div" class=""></div>
+        <div id="u5_text" class="text ">
+            <!-- <button type="submit" value="确认上传"  /> -->
+          <p><span style="text-decoration:none;cursor:pointer" onclick="doPost('upload')">确认上传</span></p>
+        </div>
+      </div>
+
+      <!-- 取消 (矩形) -->
+      <div id="u4" class="ax_default primary_button" data-label="取消" onclick="location='resource?UID={{UID}}&CID={{CID}}'">
+        <div id="u4_div" class=""></div>
+        <div id="u4_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">取消</span></p>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

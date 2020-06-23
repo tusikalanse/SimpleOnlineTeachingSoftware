@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{name}}</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="../static/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/watch.css" type="text/css" rel="stylesheet"/>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <script type="text/javascript" src="/static/js/flv.min.js"></script>
+    <style>
+        .ax_default\ box_1 {
+            display: block;
+            width: 1048px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .urlInput {
+            display: block;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .centeredVideo {
+            display: block;
+            width: 100%;
+            height: 272px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: auto;
+        }
+        
+        .controls {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        </style>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- 回放 (矩形) -->
+      <div id="u0" class="ax_default box_1" data-label="回放">
+        <div id="u0_div" class=""></div>
+        <div id="u0_text" class="text ">
+            <video autoplay="autoplay" id="videoElement" class="centeredVideo" controls>Your browser is too old which doesn't support HTML5 video.</video>
+        </div>
+      </div>
+
+      <!-- 聊天记录 (矩形) -->
+      <div id="u1" class="ax_default box_1" data-label="聊天记录">
+        <div id="u1_div" class=""></div>
+        <div id="u1_text" class="text " style="font-size:10px">
+          {% for record in records %}
+            <p>{{record}}</p>
+          {% end %}
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2" class="ax_default primary_button">
+        <div id="u2_div" class=""></div>
+        <div id="u2_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer" onclick="location='replay?UID={{UID}}&CID={{CID}}'">退出回放</span></p>
+        </div>
+      </div>
+    </div>
+    <script>
+        var player = document.getElementById('videoElement');
+        if (flvjs.isSupported()) {
+            var flvPlayer = flvjs.createPlayer({
+                type: 'flv',
+                url: '../videos?addr={{addr}}',
+            });
+            flvPlayer.attachMediaElement(videoElement);
+            flvPlayer.load(); //加载
+            flvPlayer.play();
+        }
+    </script>
+  </body>
+</html>

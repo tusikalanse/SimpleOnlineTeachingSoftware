@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>准备直播</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="../static/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/beforelive.css" type="text/css" rel="stylesheet"/>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="../static/js/QWebChannel.js"></script>
+    <script>
+        function addvideo(video) {
+            var obj = document.getElementById("u9_input")
+            obj.options.add(new Option(video, video))
+        }
+        function addaudio(audio) {
+            var obj = document.getElementById("u10_input")
+            obj.options.add(new Option(audio, audio))
+        }
+        window.onload = function () {
+            if (typeof qt == "undefined") {
+                alert("请使用客户端进行直播")
+                window.location.href="course?UID={{UID}}&CID={{CID}}"
+            }
+            else {
+                new QWebChannel(qt.webChannelTransport, function (channel) {
+                    window.pyjs = channel.objects.pyjs;    //把对象赋值到JS中
+    //                pyjs.myHello(alert);
+                    pyjs.getdevices();
+                });
+            }
+        }
+        function doPost(URL) {
+            var video = $("#u9_input").val()
+            var audio = $("#u10_input").val()
+            var UID = $("#UID").val()
+            var CID = $("#CID").val()
+            pyjs.startlive(video + " ," + audio + " ," + UID + " ," + CID)
+            PARAMS = {'UID' : UID, 
+                      'lessonName' : $("#u1_input").val(),
+                      'CID' : CID}
+            var temp = document.createElement("form");
+            temp.action = URL;
+            temp.method = "post";
+            temp.style.display = "none";
+            for (var x in PARAMS) {
+                var opt = document.createElement("textarea");
+                opt.name = x;
+                opt.value = PARAMS[x];
+                temp.appendChild(opt);
+            }
+            document.body.appendChild(temp);
+            temp.submit();
+            return temp;
+        }
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+        <input type="hidden" value="{{ UID }}" id="UID"/>
+        <input type="hidden" value="{{ CID }}" id="CID"/>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u0" class="ax_default label">
+        <div id="u0_div" class=""></div>
+        <div id="u0_text" class="text ">
+          <p><span style="text-decoration:none;">请输入课程回放名称：</span></p>
+        </div>
+      </div>
+
+      <!-- 回放名称 (文本框) -->
+      <div id="u1" class="ax_default text_field" data-label="回放名称">
+        <div id="u1_div" class=""></div>
+        <input id="u1_input" type="text" value="" class="u1_input"/>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2" class="ax_default primary_button">
+        <div id="u2_div" class=""></div>
+        <div id="u2_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer" onclick="doPost('beforelive')">开始直播</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u3" class="ax_default primary_button">
+        <div id="u3_div" class=""></div>
+        <div id="u3_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer" onclick="location='course?UID={{UID}}&CID={{CID}}'">取消</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4" class="ax_default _一级标题">
+        <div id="u4_div" class=""></div>
+        <div id="u4_text" class="text ">
+          <p><span style="text-decoration:none;">1727405048教学直播系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5" class="ax_default label">
+        <div id="u5_div" class=""></div>
+        <div id="u5_text" class="text ">
+          <p><span style="text-decoration:none;">{{UID}}</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u6" class="ax_default label">
+        <div id="u6_div" class=""></div>
+        <div id="u6_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer" onclick="location='teacher?UID={{UID}}'">返回首页</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u7" class="ax_default label">
+        <div id="u7_div" class=""></div>
+        <div id="u7_text" class="text ">
+          <p><span style="text-decoration:none;">{{name}}</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u8" class="ax_default label">
+        <div id="u8_div" class=""></div>
+        <div id="u8_text" class="text ">
+          <p><span style="text-decoration:none;">{{CID}}</span></p>
+        </div>
+      </div>
+
+      <!-- 视频选择 (下拉列表框) -->
+      <div id="u9" class="ax_default droplist" data-label="视频选择">
+        <div id="u9_div" class=""></div>
+        <select id="u9_input" class="u9_input">
+        </select>
+      </div>
+
+      <!-- 音频选择 (下拉列表框) -->
+      <div id="u10" class="ax_default droplist" data-label="音频选择">
+        <div id="u10_div" class=""></div>
+        <select id="u10_input" class="u10_input">
+        </select>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u11" class="ax_default label">
+        <div id="u11_div" class=""></div>
+        <div id="u11_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u12" class="ax_default label">
+        <div id="u12_div" class=""></div>
+        <div id="u12_text" class="text ">
+          <p><span style="text-decoration:none;">请选择视频输入</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u13" class="ax_default label">
+        <div id="u13_div" class=""></div>
+        <div id="u13_text" class="text ">
+          <p><span style="text-decoration:none;">请选择音频输入</span></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

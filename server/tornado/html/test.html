@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>flv.js demo</title>
+    <style>
+.mainContainer {
+    display: block;
+    width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.urlInput {
+    display: block;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.centeredVideo {
+    display: block;
+    width: 100%;
+    height: 576px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+}
+
+.controls {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+</style>
+    <script type="text/javascript" src="/static/js/QWebChannel.js"></script>
+    <script>
+        window.onload = function () {
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                 window.pyjs = channel.objects.pyjs;    //把对象赋值到JS中
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="mainContainer">
+        <video muted="muted" autoplay="autoplay" id="videoElement" class="centeredVideo" controls autoplay width="1024" height="576">Your browser is too old which doesn't support HTML5 video.</video>
+    </div>
+    <br>
+    <script type="text/javascript" src="/static/js/flv.min.js"></script>
+    <script>
+        var player = document.getElementById('videoElement');
+        if (flvjs.isSupported()) {
+            var flvPlayer = flvjs.createPlayer({
+                type: 'flv',
+                // url: "file:///C:/Users/wanghao/tttt.mp4"
+                url: '../videos/test.flv'
+            });
+            flvPlayer.attachMediaElement(videoElement);
+            flvPlayer.load(); //加载
+            flvPlayer.play();
+        }
+    </script>
+</body>
+
+</html>

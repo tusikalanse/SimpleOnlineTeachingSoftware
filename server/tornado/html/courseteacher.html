@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{name}}</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="../static/js/QWebChannel.js"></script>
+    <link href="../static/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/courseteacher.css" type="text/css" rel="stylesheet"/>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+      $(function(){
+      })
+      function jump() {
+        window.location.href = "beforelive?CID={{CID}}&UID={{UID}}"
+      }
+      window.onload = function () {
+          if (typeof qt == "undefined") {
+                  $("#base").append('<div id="u8" class="ax_default primary_button" data-label="开启直播按钮">' + 
+                              '<div id="u8_div" class=""></div>' + 
+                              '<div id="u8_text" class="text ">' +
+                              '<p><span style="text-decoration:none;font-size:10px">请使用客户端进行直播</span></p>' +
+                              '</div>' +
+                              '</div>');
+          }
+          else {
+            $("#base").append('<div id="u8" class="ax_default primary_button" data-label="开启直播按钮" onclick=jump()>' + 
+                              '<div id="u8_div" class=""></div>' + 
+                              '<div id="u8_text" class="text ">' +
+                              '<p><span style="text-decoration:none;cursor:pointer">直播授课</span></p>' +
+                              '</div>' +
+                              '</div>');
+          }
+      }
+  </script>
+  </head> 
+  <body>
+    <div id="base" class="">
+      <input type="hidden" value="{{ UID }}" id="UID"/>
+      <input type="hidden" value="{{ CID }}" id="CID"/>
+      <input type="hidden" value="{{ TUID }}" id="TUID"/>
+      <!-- Unnamed (矩形) -->
+      <div id="u0" class="ax_default _一级标题">
+        <div id="u0_div" class=""></div>
+        <div id="u0_text" class="text ">
+          <p><span style="text-decoration:none;">1727405048教学直播系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1" class="ax_default label">
+        <div id="u1_div" class=""></div>
+        <div id="u1_text" class="text ">
+          <p><span style="text-decoration:none;">{{UID}}</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u2" class="ax_default label" onclick="location='teacher?UID={{UID}}'">
+        <div id="u2_div" class=""></div>
+        <div id="u2_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">返回首页</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u3" class="ax_default label">
+        <div id="u3_div" class=""></div>
+        <div id="u3_text" class="text ">
+          <p><span style="text-decoration:none;">{{name}}</span></p>
+        </div>
+      </div>
+
+      <!-- 课程资源按钮 (矩形) -->
+      <div id="u4" class="ax_default primary_button" data-label="课程资源按钮" onclick="location='resource?CID={{CID}}&UID={{UID}}'">
+        <div id="u4_div" class=""></div>
+        <div id="u4_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">课程资源</span></p>
+        </div>
+      </div>
+
+      <!-- 课程回放按钮 (矩形) -->
+      <div id="u5" class="ax_default primary_button" data-label="课程回放按钮" onclick="location='replay?CID={{CID}}&UID={{UID}}'">
+        <div id="u5_div" class=""></div>
+        <div id="u5_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">课程回放</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u6" class="ax_default _文本段落">
+        <div id="u6_div" class=""></div>
+        <div id="u6_text" class="text ">
+          <p><span style="text-decoration:none;">{{intro}}</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u7" class="ax_default label">
+        <div id="u7_div" class=""></div>
+        <div id="u7_text" class="text ">
+          <p><span style="text-decoration:none;">{{CID}}</span></p>
+        </div>
+      </div>
+      
+      <!-- 开启直播按钮 
+      <div id="u8" class="ax_default primary_button" data-label="开启直播按钮">
+        <div id="u8_div" class=""></div>
+        <div id="u8_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">直播授课</span></p>
+        </div>
+      </div> -->
+    </div>
+  </body>
+</html>

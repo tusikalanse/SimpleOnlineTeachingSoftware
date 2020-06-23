@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>加入新课程</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="../static/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/join.css" type="text/css" rel="stylesheet"/>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        function doPost(URL) {
+            PARAMS = {'UID' : $("#UID").val(), 'CID' : $("#u2_input").val()};
+            var temp = document.createElement("form");
+            temp.action = URL;
+            temp.method = "post";
+            temp.style.display = "none";
+            for (var x in PARAMS) {
+                var opt = document.createElement("textarea");
+                opt.name = x;
+                opt.value = PARAMS[x];
+                temp.appendChild(opt);
+            }
+            document.body.appendChild(temp);
+            temp.submit();
+            return temp;
+        }
+    </script>
+  </head>
+  <body>
+    <input type="hidden" value="{{ UID }}" id="UID"/>
+    <div id="base" class="">
+
+      <!-- Unnamed (矩形) -->
+      <div id="u0" class="ax_default _一级标题">
+        <div id="u0_div" class=""></div>
+        <div id="u0_text" class="text ">
+          <p><span style="text-decoration:none;">加入课程：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1" class="ax_default label">
+        <div id="u1_div" class=""></div>
+        <div id="u1_text" class="text ">
+          <p><span style="text-decoration:none;">请输入课程编号：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (文本框) -->
+      <div id="u2" class="ax_default text_field">
+        <div id="u2_div" class=""></div>
+        <input id="u2_input" type="text" value="" class="u2_input"/>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u3" class="ax_default primary_button" onclick="location='student?UID={{UID}}'">
+        <div id="u3_div" class=""></div>
+        <div id="u3_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">取消</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u4" class="ax_default primary_button" onclick="doPost('join')">
+        <div id="u4_div" class=""></div>
+        <div id="u4_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer">确认加入</span></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

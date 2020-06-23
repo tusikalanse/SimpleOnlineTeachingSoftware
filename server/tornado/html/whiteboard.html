@@ -1,0 +1,194 @@
+<html>
+
+<head>
+    <title>白板demo</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            var canvas = document.getElementById('myCanvas');
+            //获得 2d 上下文对象
+            var ctx = canvas.getContext('2d');
+            var type = "pencil", drawing = 0;
+            var startX = 0, startY = 0;
+            var history = []
+            var redoList = []
+            var lineWidth = 2
+            var colour = "#000000"
+            ctx.globalCompositeOperation = "source-over"
+            canvas.addEventListener('mousedown', down);
+            canvas.addEventListener('mousemove', move);
+            canvas.addEventListener('mouseup', up);
+            canvas.addEventListener('mouseleave', up);
+            function down(event) {
+                event.preventDefault();
+                colour = $("#colorboard").val()
+                lineWidth = $("#chooseWidth").val()
+                ctx.beginPath();
+                drawing = 1;
+                addPoint(event.x, event.y, true)
+                console.log(type)
+            }
+            function move(event) {
+                if (drawing === 1)
+                    addPoint(event.x, event.y, false);
+            }
+            function up(event) {
+                if (drawing === 1) {
+                    redoList = []
+                }
+                drawing = 0;
+            }
+            function addPoint(x, y, newpath) {
+                const p = {x, y}
+                const graphType = type
+                if (newpath === true) {
+                    const d = {savedData:[p], savedColour:colour, savedLineWidth:lineWidth, savedType:type}
+                    history.push(d)
+                }
+                else if (type === "rubber" || type === "pencil") {
+                    history[history.length - 1].savedData.push(p);
+                    paint(history[history.length - 1])
+                }
+                else if (type === "line" || type === "circle" || type === "rectangle") {
+                    history[history.length - 1].savedData[1] = p;
+                    repaint()
+                }
+            }
+            repaint = () => {repaintData(history)} 
+            function repaintData(history) {
+                console.log("repainting")
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+                history.map(paint)
+            }
+            function paint(stroke) {
+                ctx.save()
+                ctx.beginPath()
+                console.log(stroke.savedType)
+                ctx.strokeStyle = stroke.savedColour
+                ctx.lineWidth = stroke.savedLineWidth
+                if (stroke.savedType === "pencil") {
+                    for (let i = 1; i < stroke.savedData.length; ++i) {
+                        const prev = stroke.savedData[i - 1]
+                        const current = stroke.savedData[i]
+                        ctx.moveTo(prev.x, prev.y)
+                        ctx.lineTo(current.x, current.y)
+                    }
+                }
+                else if (stroke.savedType === "rubber") {
+                    for (let i = 0; i < stroke.savedData.length; ++i) {
+                        const current = stroke.savedData[i]
+                        ctx.clearRect(current.x - ctx.lineWidth, current.y - ctx.lineWidth, 2 * ctx.lineWidth, 2 * ctx.lineWidth)
+                    }
+                    ctx.stroke()
+                }
+                else if (stroke.savedType === "circle") {
+                    let sx = stroke.savedData[0].x
+                    let sy = stroke.savedData[0].y
+                    let ex = stroke.savedData[1].x
+                    let ey = stroke.savedData[1].y
+                    let dx = Math.abs(sx - ex), dy = Math.abs(sy - ey)
+                    let r = dx > dy ? dx : dy
+                    let ox = (sx + ex) / 2
+                    let oy = (sy + ey) / 2
+                    ctx.arc(ox, oy, r / 2, 0, 2 * Math.PI, false)
+                }
+                else if (stroke.savedType === "line") {
+                    let sx = stroke.savedData[0].x
+                    let sy = stroke.savedData[0].y
+                    let ex = stroke.savedData[1].x
+                    let ey = stroke.savedData[1].y
+                    ctx.moveTo(sx, sy)
+                    ctx.lineTo(ex, ey)
+                }
+                else if (stroke.savedType === "rectangle") {
+                    let sx = stroke.savedData[0].x
+                    let sy = stroke.savedData[0].y
+                    let ex = stroke.savedData[1].x
+                    let ey = stroke.savedData[1].y
+                    ctx.moveTo(sx, sy)
+                    ctx.lineTo(sx, ey)
+                    ctx.lineTo(ex, ey)
+                    ctx.lineTo(ex, sy)
+                    ctx.lineTo(sx, sy)
+                }
+                ctx.stroke()
+                ctx.closePath()
+                ctx.restore()
+            }
+            $("#pencil").click(function () {
+                type = "pencil";
+            })
+            $("#circle").click(function () {
+                type = "circle";
+            })
+            $("#line").click(function () {
+                type = "line";
+            })
+            $("#rectangle").click(function () {
+                type = "rectangle";
+            })
+            $("#rubber").click(function () {
+                type = "rubber";
+            })
+            $("#undo").click(function () {
+                if (history.length === 0)
+                    return 
+                redoList.push(history[history.length - 1])
+                history.pop()
+                repaint()
+            })
+            $("#redo").click(function () {
+                if (redoList.length === 0)
+                    return
+                history.push(redoList[redoList.length - 1])
+                redoList.pop()
+                repaint()
+            }) 
+            $("#clear").click(function () {
+                history = []
+                redoList = []
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+            })           
+        })
+    </script>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="640" height="480" style="border:1px solid #d3d3d3;">Your browser </canvas>
+    <div>
+        <button id="pencil">画笔</button>
+        <button id="circle">圆形</button>
+        <button id="line">线段</button>
+        <button id="rectangle">矩形</button>
+        <button id="rubber">擦除</button>
+        <button id="undo">撤销</button>
+        <button id="redo">重做</button>
+        <button id="clear">清除</button>
+        选择颜色
+        <select id="colorboard">
+            <option value="RED" style="color:#FF0000">红色</option>
+            <option value="PURPLE" style="color:#FF00FF">紫色</option>
+            <option value="YELLOW" style="color:#FFFF00">黄色</option>
+            <option value="BLUE" style="color:#0000FF">蓝色</option>
+            <option value="GREEN" style="color:#00FF00">绿色</option>
+            <option value="CYAN" style="color:#00FFFF">青色</option>
+            <option value="BLACK" selected="selected" style="color:#000000">黑色</option>
+        </select>
+        选择粗细
+        <select id="chooseWidth">
+            <option selected="selected">2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>15</option>
+            <option>20</option>
+        </select>
+    </div>
+</body>
+</html>

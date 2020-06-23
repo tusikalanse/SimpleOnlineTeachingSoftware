@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>学生主页</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="../static/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/student.css" type="text/css" rel="stylesheet"/>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (矩形) -->
+      <div id="u15" class="ax_default _一级标题">
+        <div id="u15_div" class=""></div>
+        <div id="u15_text" class="text ">
+          <p><span style="text-decoration:none;">1727405048的教学直播系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u16" class="ax_default label">
+        <div id="u16_div" class=""></div>
+        <div id="u16_text" class="text ">
+          <p><span style="text-decoration:none;">{{UID}}</span></p>
+        </div>
+      </div>
+
+      <!-- 课程列表 (矩形) -->
+      <div id="u17" class="ax_default text_field" data-label="课程列表">
+        <div id="u17_div" class=""></div>
+        <div id="u17_text" class="text ">
+          <div>
+            {% for course in courselist %}
+                <p>{{course[1]}} <span style="text-decoration:none;cursor:pointer;color:#0000FF;" onclick="location='course?UID={{UID}}&CID={{course[0]}}'">进入课程</span> </p>
+            {% end %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u18" class="ax_default primary_button">
+        <div id="u18_div" class=""></div>
+        <div id="u18_text" class="text ">
+          <p><span style="text-decoration:none;cursor:pointer" onclick="location='join?UID={{UID}}'">加入新课程</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u19" class="ax_default _文本段落">
+        <div id="u19_div" class=""></div>
+        <div id="u19_text" class="text ">
+          <p><a id="u20" class="link"><span style="text-decoration:none;cursor:pointer" onclick="location='teacher?UID={{UID}}'">切换到教师端</span></a></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u21" class="ax_default _文本段落">
+        <div id="u21_div" class=""></div>
+        <div id="u21_text" class="text ">
+          <p><a id="u22" class="link"><span style="text-decoration:none;cursor:pointer" onclick="location='modifypassword?UID={{UID}}'">修改密码</span></a></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
